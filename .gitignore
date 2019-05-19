@@ -1,3 +1,10 @@
+# Build directories
+build
+
+#Vim's specific
+*.*~
+*.*swp
+
 # Prerequisites
 *.d
 
