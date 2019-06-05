@@ -9,12 +9,14 @@ target_compile_definitions(hal_stm32h7 PUBLIC STM32H743xx)
 add_subdirectory(STM32H7xx_HAL_Driver)
 
 target_include_directories(hal_stm32h7 
-    PRIVATE .
-    CMSIS/Device/ST/STM32H7xx/Include
-    CMSIS/Include)
+    PRIVATE 
+        .
+    PUBLIC
+        CMSIS/Device/ST/STM32H7xx/Include
+        CMSIS/Include)
 
 set_target_properties(hal_stm32h7
     PROPERTIES
-        OUTPUT_NAME "hal_stm32h7.bin"
+        OUTPUT_NAME "hal_stm32h7"
         PREFIX ""
-        SUFFIX "")
+        SUFFIX ".bin")
