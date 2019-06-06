@@ -17,7 +17,9 @@ add_executable(dust_sucker.elf
     Src/stm32h7xx_it.c
     Src/system_stm32h7xx.c
     STM32H743ZITx_FLASH.ld 
-    )
+    
+    startup_stm32h743xx.s
+)
 target_include_directories(dust_sucker.elf PUBLIC Inc)
 
 add_subdirectory(STM32Cube_FW_H7_V1.3.0)
