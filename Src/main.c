@@ -57,7 +57,24 @@
 static void SystemClock_Config(void);
 static void Error_Handler(void);
 static void CPU_CACHE_Enable(void);
+static void LEDInit(void);
+void LEDInit(void)
+{
+    GPIO_InitTypeDef  GPIO_InitStruct;
 
+    /* Enable the GPIO_LED Clock */
+    __HAL_RCC_GPIOB_CLK_ENABLE();
+    /* Configure the GPIO_LED pin */
+    GPIO_InitStruct.Pin = GPIO_PIN_0 | GPIO_PIN_7 | GPIO_PIN_14;
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+
+    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_14, GPIO_PIN_RESET);
+}
 /* Private functions ---------------------------------------------------------*/
 
 /**
@@ -88,11 +105,18 @@ int main(void)
 
   /* Add your application code here */
   
-
+  LEDInit();
   /* Infinite loop */
   while (1)
   {
     
+    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_14, GPIO_PIN_RESET);
+    HAL_Delay(500);
+    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_14, GPIO_PIN_SET);
   }
 }
 
