@@ -27,6 +27,7 @@ add_executable(dust_sucker
     Src/stm32h7xx_it.c 
     Src/stm32h7xx_hal_msp.c 
     Src/system_stm32h7xx.c  
+    Src/wheel.cpp
     STM32H743ZITx_FLASH.ld)
 
 add_subdirectory(STM32Cube_FW_H7_V1.3.0)
