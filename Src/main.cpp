@@ -19,7 +19,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "string.h"
-
+#include "wheel.h"
 /* Private includes ----------------------------------------------------------*/
 
 
@@ -82,12 +82,18 @@ LEDInit();
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
 
+  //Wheel wheel1(GPIOB, LD2_Pin, GPIOE, GPIO_PIN_15);
+  Wheel wheel1(GPIOE, GPIO_PIN_14, GPIOE, GPIO_PIN_15);
   /* Infinite loop */
+  wheel1.GoForward(100);
+  HAL_Delay(500);
+  wheel1.GoBack(100);
   while (1)
   {
 
 	    HAL_GPIO_TogglePin(GPIOB, LD3_Pin);
-		HAL_Delay(900);
+        HAL_Delay(500);
+
   }
 }
 
@@ -170,6 +176,7 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
   __HAL_RCC_GPIOD_CLK_ENABLE();
+  __HAL_RCC_GPIOE_CLK_ENABLE();
   __HAL_RCC_GPIOG_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
