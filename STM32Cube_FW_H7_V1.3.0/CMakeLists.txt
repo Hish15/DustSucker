@@ -1,12 +1,15 @@
 add_library(hal_stm32h7 "")
-target_compile_options(hal_stm32h7 PUBLIC
-    -mthumb -fno-builtin -mcpu=cortex-m7 -mfpu=fpv5-sp-d16 -mfloat-abi=softfp -Wall -std=gnu99 -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -fno-unroll-loops -ffast-math -ftree-vectorize)
 
 #target_link_libraries(DustSucker VL53L1X "-specs=nosys.specs -specs=nano.specs -u _printf_float")
 
-target_compile_definitions(hal_stm32h7 PUBLIC STM32H743xx)
+target_compile_definitions(hal_stm32h7 PUBLIC USE_HAL_DRIVER STM32H743xx)
 
 add_subdirectory(STM32H7xx_HAL_Driver)
+
+set(STARTUP_FILE CMSIS/Device/ST/STM32H7xx/Source/Templates/gcc/startup_stm32h743xx.s)
+set_source_files_properties(${STARTUP_FILE} PROPERTIES COMPILE_FLAGS "-x assembler-with-cpp")
+
+target_sources(hal_stm32h7 PRIVATE ${STARTUP_FILE})
 
 target_include_directories(hal_stm32h7 
     PRIVATE 
