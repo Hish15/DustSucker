@@ -23,7 +23,7 @@ add_link_options(-specs=nosys.specs
 
 
 add_executable(dust_sucker 
-    Src/main.c 
+    Src/main.cpp
     Src/stm32h7xx_it.c 
     Src/stm32h7xx_hal_msp.c 
     Src/system_stm32h7xx.c  
