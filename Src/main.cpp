@@ -19,7 +19,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "string.h"
-
+#include "wheel.h"
 /* Private includes ----------------------------------------------------------*/
 
 
@@ -38,24 +38,6 @@
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
-static void LEDInit(void);
-void LEDInit(void)
-{
-    GPIO_InitTypeDef  GPIO_InitStruct;
-
-    /* Enable the GPIO_LED Clock */
-    __HAL_RCC_GPIOB_CLK_ENABLE();
-    /* Configure the GPIO_LED pin */
-    GPIO_InitStruct.Pin = GPIO_PIN_0 | GPIO_PIN_7 | GPIO_PIN_14;
-    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-    GPIO_InitStruct.Pull = GPIO_NOPULL;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-
-    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, GPIO_PIN_RESET);
-    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, GPIO_PIN_RESET);
-    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_14, GPIO_PIN_RESET);
-}
 
 /* Private user code ---------------------------------------------------------*/
 
@@ -77,17 +59,29 @@ int main(void)
   /* Configure the system clock */
   SystemClock_Config();
 
-LEDInit();
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
 
+  //Wheel wheel1(GPIOB, LD2_Pin, GPIOE, GPIO_PIN_15);
+  Wheel wheel1(GPIOE, GPIO_PIN_14, GPIOE, GPIO_PIN_15);
+  Wheel wheel2(GPIOF, GPIO_PIN_3, GPIOE, GPIO_PIN_11);
   /* Infinite loop */
+  wheel1.GoForward(100);
+  HAL_Delay(500);
+  wheel1.GoBack(100);
+
+  HAL_Delay(1000);
+  wheel2.GoForward(100);
+  HAL_Delay(500);
+  wheel2.GoBack(100);
   while (1)
   {
 
-	    HAL_GPIO_TogglePin(GPIOB, LD3_Pin);
-		HAL_Delay(900);
+	    HAL_GPIO_TogglePin(LD3_GPIO_Port, LD3_Pin);
+        wheel1.GoForward(2000);
+        HAL_Delay(500);
+
   }
 }
 
@@ -165,12 +159,14 @@ static void MX_GPIO_Init(void)
   GPIO_InitTypeDef GPIO_InitStruct = {0};
 
   /* GPIO Ports Clock Enable */
-  __HAL_RCC_GPIOC_CLK_ENABLE();
-  __HAL_RCC_GPIOH_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
+  __HAL_RCC_GPIOC_CLK_ENABLE();
   __HAL_RCC_GPIOD_CLK_ENABLE();
+  __HAL_RCC_GPIOE_CLK_ENABLE();
+  __HAL_RCC_GPIOF_CLK_ENABLE();
   __HAL_RCC_GPIOG_CLK_ENABLE();
+  __HAL_RCC_GPIOH_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, LD3_Pin|LD2_Pin, GPIO_PIN_RESET);
