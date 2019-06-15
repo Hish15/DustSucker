@@ -28,9 +28,12 @@ add_executable(dust_sucker
     Src/stm32h7xx_hal_msp.c 
     Src/system_stm32h7xx.c  
     Src/wheel.cpp
-    STM32H743ZITx_FLASH.ld)
-
-add_subdirectory(STM32Cube_FW_H7_V1.3.0)
+    STM32H743ZITx_FLASH.ld
+    Src/usbd_cdc_if.c
+    Src/usbd_conf.c
+    Src/usbd_desc.c
+    Src/usb_device.c
+)
 
 target_include_directories(dust_sucker PUBLIC
     Inc
@@ -39,6 +42,11 @@ target_include_directories(dust_sucker PUBLIC
     STM32Cube_FW_H7_V1.3.0/CMSIS/Device/ST/STM32H7xx/Include
     STM32Cube_FW_H7_V1.3.0/CMSIS/Include
     STM32Cube_FW_H7_V1.3.0/CMSIS/Include)
+
+add_subdirectory(STM32_USB_Device_Library)
+target_link_libraries(dust_sucker PUBLIC stm32_usb_device)
+
+add_subdirectory(STM32Cube_FW_H7_V1.3.0)
 target_link_libraries( dust_sucker PUBLIC hal_stm32h7)
 set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 
