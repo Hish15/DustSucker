@@ -19,7 +19,10 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "string.h"
+#include "usb_device.h"
+#include "usbd_cdc_if.h"
 #include "wheel.h"
+
 /* Private includes ----------------------------------------------------------*/
 
 
@@ -62,8 +65,8 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_USB_DEVICE_Init();
 
-  //Wheel wheel1(GPIOB, LD2_Pin, GPIOE, GPIO_PIN_15);
   Wheel wheel1(GPIOE, GPIO_PIN_14, GPIOE, GPIO_PIN_15);
   Wheel wheel2(GPIOF, GPIO_PIN_3, GPIOE, GPIO_PIN_11);
   /* Infinite loop */
@@ -75,16 +78,18 @@ int main(void)
   wheel2.GoForward(100);
   HAL_Delay(500);
   wheel2.GoBack(100);
+  HAL_Delay(500);
+  uint8_t text[] = {'B','o','u', 'h', '\n'};
   while (1)
   {
 
 	    HAL_GPIO_TogglePin(LD3_GPIO_Port, LD3_Pin);
+       CDC_Transmit_FS(text, sizeof(text));
         wheel1.GoForward(2000);
         HAL_Delay(500);
 
   }
 }
-
 /**
   * @brief System Clock Configuration
   * @retval None
@@ -174,8 +179,11 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(USB_PowerSwitchOn_GPIO_Port, USB_PowerSwitchOn_Pin, GPIO_PIN_RESET);
 
+  /*Configure GPIO pin : USER_Btn_Pin */
+  GPIO_InitStruct.Pin = USER_Btn_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(USER_Btn_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pins : LD3_Pin LD2_Pin */
   GPIO_InitStruct.Pin = LD3_Pin|LD2_Pin;
@@ -183,6 +191,20 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : USB_PowerSwitchOn_Pin */
+  GPIO_InitStruct.Pin = USB_PowerSwitchOn_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(USB_PowerSwitchOn_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : USB_OverCurrent_Pin */
+  GPIO_InitStruct.Pin = USB_OverCurrent_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(USB_OverCurrent_GPIO_Port, &GPIO_InitStruct);
+
 }
 
 
