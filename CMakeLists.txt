@@ -6,23 +6,24 @@ SET(CMAKE_CROSSCOMPILING 1)
 
 set(CMAKE_TRY_COMPILE_TARGET_TYPE "STATIC_LIBRARY")
 
-set(CMAKE_C_COMPILER   /opt/gcc-arm-none-eabi-8-2018-q4-major/bin/arm-none-eabi-gcc)
-set(CMAKE_CXX_COMPILER /opt/gcc-arm-none-eabi-8-2018-q4-major/bin/arm-none-eabi-g++)
+set(CMAKE_C_COMPILER   arm-none-eabi-gcc)
+set(CMAKE_CXX_COMPILER arm-none-eabi-g++)
 set (CMAKE_CXX_STANDARD 11)
-PROJECT(dust_sucker CXX C ASM)
+PROJECT(dust_sucker.elf CXX C ASM)
 
-
+set(CMAKE_BUILD_TYPE Debug)
 add_compile_options(-mcpu=cortex-m7 -mthumb -mfpu=fpv5-d16 -mfloat-abi=hard -Wall -ffunction-sections)
 
-add_link_options(-specs=nosys.specs
-    -Wl,--gc-sections -T/mnt/c/gitrepo/DustSucker/STM32H743ZITx_FLASH.ld
+add_link_options(-specs=nano.specs -u _printf_float
+    -Wl,--gc-sections -T${CMAKE_SOURCE_DIR}/STM32H743ZITx_FLASH.ld
     -lc -lm -lnosys
     -Wl,-Map=dust_sucker.map,--cref
     -mcpu=cortex-m7 -mthumb -mfpu=fpv5-d16 -mfloat-abi=hard
     -Wall -fdata-sections -ffunction-sections)
 
 
-add_executable(dust_sucker 
+add_executable(dust_sucker.elf
+    Src/syscalls.c
     Src/main.cpp
     Src/stm32h7xx_it.c 
     Src/stm32h7xx_hal_msp.c 
@@ -34,8 +35,7 @@ add_executable(dust_sucker
     Src/usbd_desc.c
     Src/usb_device.c
 )
-
-target_include_directories(dust_sucker PUBLIC
+target_include_directories(dust_sucker.elf PUBLIC
     Inc
     STM32Cube_FW_H7_V1.3.0/STM32H7xx_HAL_Driver/Inc
     STM32Cube_FW_H7_V1.3.0/STM32H7xx_HAL_Driver/Inc/Legacy
@@ -44,10 +44,10 @@ target_include_directories(dust_sucker PUBLIC
     STM32Cube_FW_H7_V1.3.0/CMSIS/Include)
 
 add_subdirectory(STM32_USB_Device_Library)
-target_link_libraries(dust_sucker PUBLIC stm32_usb_device)
+target_link_libraries(dust_sucker.elf PUBLIC stm32_usb_device)
 
 add_subdirectory(STM32Cube_FW_H7_V1.3.0)
-target_link_libraries( dust_sucker PUBLIC hal_stm32h7)
+target_link_libraries( dust_sucker.elf PUBLIC hal_stm32h7)
 set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
