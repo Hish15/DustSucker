@@ -147,7 +147,7 @@ USBD_CDC_ItfTypeDef USBD_Interface_fops_FS =
   CDC_Control_FS,
   CDC_Receive_FS
 };
-void CDC_Init_FS2(void(*rxCallback)(uint8_t*, uint32_t))
+void USBD_CDC_SetRxCallBack(void(*rxCallback)(uint8_t*, uint32_t))
 {
     RxCallback =rxCallback;
 }
@@ -266,12 +266,15 @@ static int8_t CDC_Control_FS(uint8_t cmd, uint8_t* pbuf, uint16_t length)
   */
 static int8_t CDC_Receive_FS(uint8_t* Buf, uint32_t *Len)
 {
-  /* USER CODE BEGIN 6 */
-    printf("Received %u bytes\n", *Len);
-  USBD_CDC_SetRxBuffer(&hUsbDeviceFS, &Buf[0]);
-  USBD_CDC_ReceivePacket(&hUsbDeviceFS);
-  return (USBD_OK);
-  /* USER CODE END 6 */
+    /* USER CODE BEGIN 6 */
+    if(RxCallback != NULL)
+    {
+        RxCallback(Buf, *Len);
+    }
+    USBD_CDC_SetRxBuffer(&hUsbDeviceFS, &Buf[0]);
+    USBD_CDC_ReceivePacket(&hUsbDeviceFS);
+    return (USBD_OK);
+    /* USER CODE END 6 */
 }
 
 /**
