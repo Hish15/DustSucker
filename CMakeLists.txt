@@ -51,7 +51,17 @@ target_link_libraries( dust_sucker.elf PUBLIC hal_stm32h7)
 set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_OBJCOPY} -Oihex $<TARGET_FILE:${PROJECT_NAME}> ${PROJECT_NAME}.hex
-    COMMAND ${CMAKE_OBJCOPY} -Obinary $<TARGET_FILE:${PROJECT_NAME}> ${PROJECT_NAME}.bin
-    COMMENT "Building ${HEX_FILE} \nBuilding ${BIN_FILE}")
+    #COMMAND ${CMAKE_OBJCOPY} -O ihex $<TARGET_FILE:${PROJECT_NAME}> ${PROJECT_NAME}.hex
+	COMMENT "Building ${HEX_FILE} \nBuilding ${BIN_FILE}"
+    COMMAND ${CMAKE_OBJCOPY} -Obinary $<TARGET_FILE:${PROJECT_NAME}> ${PROJECT_NAME}.bin)
+	
+set(JLINK_FILE "${CMAKE_CURRENT_BINARY_DIR}/flash_${PROJECT_NAME}.jlink")
+file(WRITE "${JLINK_FILE}"
+	"loadbin ${PROJECT_NAME}.bin,0x08000000\n"
+	"r\n"
+	"go\n"
+    "exit")
+add_custom_target(flash
+	COMMENT "Trying to flash the device with ${PROJECT_NAME} at 0x08000000"
+	COMMAND JLink.exe -device "STM32H743ZI" -autoconnect 1 -If SWD -Speed 4000  -ExitOnError -CommandFile "flash_${PROJECT_NAME}.jlink")
 
