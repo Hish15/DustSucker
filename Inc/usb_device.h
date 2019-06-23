@@ -66,7 +66,7 @@
   */
 
 /** USB Device initialization function. */
-void MX_USB_DEVICE_Init(void);
+void MX_USB_DEVICE_Init(void(*rxCallback)(uint8_t*, uint32_t));
 
 /*
  * -- Insert functions declaration here --

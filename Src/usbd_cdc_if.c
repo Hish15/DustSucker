@@ -97,7 +97,7 @@ uint8_t UserRxBufferFS[APP_RX_DATA_SIZE];
 
 /** Data to send over USB CDC are stored in this buffer   */
 uint8_t UserTxBufferFS[APP_TX_DATA_SIZE];
-
+void(*RxCallback)(uint8_t*, uint32_t) = NULL;
 /* USER CODE BEGIN PRIVATE_VARIABLES */
 
 /* USER CODE END PRIVATE_VARIABLES */
@@ -131,6 +131,7 @@ static int8_t CDC_DeInit_FS(void);
 static int8_t CDC_Control_FS(uint8_t cmd, uint8_t* pbuf, uint16_t length);
 static int8_t CDC_Receive_FS(uint8_t* pbuf, uint32_t *Len);
 
+
 /* USER CODE BEGIN PRIVATE_FUNCTIONS_DECLARATION */
 
 /* USER CODE END PRIVATE_FUNCTIONS_DECLARATION */
@@ -146,7 +147,10 @@ USBD_CDC_ItfTypeDef USBD_Interface_fops_FS =
   CDC_Control_FS,
   CDC_Receive_FS
 };
-
+void USBD_CDC_SetRxCallBack(void(*rxCallback)(uint8_t*, uint32_t))
+{
+    RxCallback =rxCallback;
+}
 /* Private functions ---------------------------------------------------------*/
 /**
   * @brief  Initializes the CDC media low layer over the FS USB IP
@@ -262,11 +266,15 @@ static int8_t CDC_Control_FS(uint8_t cmd, uint8_t* pbuf, uint16_t length)
   */
 static int8_t CDC_Receive_FS(uint8_t* Buf, uint32_t *Len)
 {
-  /* USER CODE BEGIN 6 */
-  USBD_CDC_SetRxBuffer(&hUsbDeviceFS, &Buf[0]);
-  USBD_CDC_ReceivePacket(&hUsbDeviceFS);
-  return (USBD_OK);
-  /* USER CODE END 6 */
+    /* USER CODE BEGIN 6 */
+    if(RxCallback != NULL)
+    {
+        RxCallback(Buf, *Len);
+    }
+    USBD_CDC_SetRxBuffer(&hUsbDeviceFS, &Buf[0]);
+    USBD_CDC_ReceivePacket(&hUsbDeviceFS);
+    return (USBD_OK);
+    /* USER CODE END 6 */
 }
 
 /**

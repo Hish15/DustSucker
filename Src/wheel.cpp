@@ -23,15 +23,18 @@ Wheel::Wheel(GPIO_TypeDef* forwardPort, uint16_t forwardPin, GPIO_TypeDef* backw
 
 }
 
-void Wheel::GoForward( uint16_t duration)
+void Wheel::GoForward(float ratio)
 {
     HAL_GPIO_WritePin(_forwardPort,_forwardPin,GPIO_PIN_SET);
-    HAL_Delay(duration); 
-    HAL_GPIO_WritePin(_forwardPort,_forwardPin,GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(_backwardPort, _backwardPin, GPIO_PIN_RESET);
 }
-void Wheel::GoBack( uint16_t duration)
+void Wheel::GoBack( float ratio)
 {
     HAL_GPIO_WritePin(_backwardPort,_backwardPin,GPIO_PIN_SET);
-    HAL_Delay(duration); 
-    HAL_GPIO_WritePin(_backwardPort,_backwardPin,GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(_forwardPort, _forwardPin, GPIO_PIN_RESET);
+}
+void Wheel::Stop()
+{
+    HAL_GPIO_WritePin(_backwardPort, _backwardPin, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(_forwardPort, _forwardPin, GPIO_PIN_RESET);
 }

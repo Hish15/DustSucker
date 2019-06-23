@@ -82,6 +82,7 @@ extern USBD_CDC_ItfTypeDef USBD_Interface_fops_FS;
 
 
 
+void USBD_CDC_SetRxCallBack(void(*rxCallback)(uint8_t*, uint32_t));
 /**
   * @}
   */

@@ -10,9 +10,23 @@ class Wheel
     public:
         Wheel(GPIO_TypeDef* forwardPort, uint16_t forwardPin, GPIO_TypeDef* backwardPort, uint16_t backwardPin);
 
+        /*
+         * Turn the wheel forward at given pwm ratio
+         *
+         * \param ratio [0 : 1.0] pwm ratio
+         */
+        void GoForward(float ratio = 1.0f);
+        /*
+         * Turn the wheel backward at given pwm ratio
+         *
+         * \param ratio [0 : 1.0] pwm ratio
+         */
+        void GoBack(float ratio = 1.0f);
+        /*
+         * Stop any wheel motion 
+         */
+        void Stop();
 
-        void GoForward(uint16_t duration_ms);
-        void GoBack(uint16_t duration_ms);
     private:
         GPIO_TypeDef* _forwardPort;
         uint16_t _forwardPin;
