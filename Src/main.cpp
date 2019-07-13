@@ -82,8 +82,11 @@ int main(void)
     MX_GPIO_Init();
     MX_USB_DEVICE_Init(&usbRxCallback);
 
-    Wheel wheel1(GPIOE, GPIO_PIN_14, GPIOE, GPIO_PIN_15);
-    Wheel wheel2(GPIOF, GPIO_PIN_3, GPIOE, GPIO_PIN_11);
+    //Enable H bridge motors
+    HAL_GPIO_WritePin(GPIOE, GPIO_PIN_11, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(GPIOE, GPIO_PIN_14, GPIO_PIN_SET);
+    Wheel wheel1(GPIOD, GPIO_PIN_12, GPIOD, GPIO_PIN_13);
+    Wheel wheel2(GPIOD, GPIO_PIN_14, GPIOD, GPIO_PIN_15);
     /* Infinite loop */
     printf("Starting wheels test\n");
     wheel1.GoForward();
@@ -243,6 +246,13 @@ static void MX_GPIO_Init(void)
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
     HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
+    //Configure enable wheel
+    GPIO_InitStruct.Pin = GPIO_PIN_11|GPIO_PIN_14;
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+    HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
+    
     /*Configure GPIO pin : USB_PowerSwitchOn_Pin */
     GPIO_InitStruct.Pin = USB_PowerSwitchOn_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
