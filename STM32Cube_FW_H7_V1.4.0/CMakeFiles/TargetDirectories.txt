@@ -1,0 +1,11 @@
+/mnt/c/gitrepo/DustSucker/STM32Cube_FW_H7_V1.4.0/CMakeFiles/rebuild_cache.dir
+/mnt/c/gitrepo/DustSucker/STM32Cube_FW_H7_V1.4.0/CMakeFiles/edit_cache.dir
+/mnt/c/gitrepo/DustSucker/STM32Cube_FW_H7_V1.4.0/CMakeFiles/dust_sucker.elf.dir
+/mnt/c/gitrepo/DustSucker/STM32Cube_FW_H7_V1.4.0/CMakeFiles/flash.dir
+/mnt/c/gitrepo/DustSucker/STM32Cube_FW_H7_V1.4.0/STM32_USB_Device_Library/CMakeFiles/rebuild_cache.dir
+/mnt/c/gitrepo/DustSucker/STM32Cube_FW_H7_V1.4.0/STM32_USB_Device_Library/CMakeFiles/edit_cache.dir
+/mnt/c/gitrepo/DustSucker/STM32Cube_FW_H7_V1.4.0/STM32Cube_FW_H7_V1.3.0/CMakeFiles/rebuild_cache.dir
+/mnt/c/gitrepo/DustSucker/STM32Cube_FW_H7_V1.4.0/STM32Cube_FW_H7_V1.3.0/CMakeFiles/hal_stm32h7.dir
+/mnt/c/gitrepo/DustSucker/STM32Cube_FW_H7_V1.4.0/STM32Cube_FW_H7_V1.3.0/CMakeFiles/edit_cache.dir
+/mnt/c/gitrepo/DustSucker/STM32Cube_FW_H7_V1.4.0/STM32Cube_FW_H7_V1.3.0/STM32H7xx_HAL_Driver/CMakeFiles/rebuild_cache.dir
+/mnt/c/gitrepo/DustSucker/STM32Cube_FW_H7_V1.4.0/STM32Cube_FW_H7_V1.3.0/STM32H7xx_HAL_Driver/CMakeFiles/edit_cache.dir
