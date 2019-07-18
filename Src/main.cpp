@@ -22,7 +22,7 @@
 #include "usb_device.h"
 #include "usbd_cdc_if.h"
 #include "wheel.h"
-
+#include "tim.h"
 /* Private includes ----------------------------------------------------------*/
 
 
@@ -80,14 +80,19 @@ int main(void)
 
     /* Initialize all configured peripherals */
     MX_GPIO_Init();
+    MX_TIM4_Init(); 
     MX_USB_DEVICE_Init_User(&usbRxCallback);
 
     //Enable H bridge motors
     HAL_GPIO_WritePin(GPIOE, GPIO_PIN_11, GPIO_PIN_SET);
     HAL_GPIO_WritePin(GPIOE, GPIO_PIN_14, GPIO_PIN_SET);
-    Wheel wheel1(GPIOD, GPIO_PIN_12, GPIOD, GPIO_PIN_13);
-    Wheel wheel2(GPIOD, GPIO_PIN_14, GPIOD, GPIO_PIN_15);
+    HAL_TIM_PWM_Start(&htim4,TIM_CHANNEL_2);
+    HAL_TIM_PWM_Start(&htim4,TIM_CHANNEL_4);
+    while(true);
+    //Wheel wheel1(GPIOD, GPIO_PIN_12, GPIOD, GPIO_PIN_13);
+    //Wheel wheel2(GPIOD, GPIO_PIN_14, GPIOD, GPIO_PIN_15);
     /* Infinite loop */
+    /*
     printf("Starting wheels test\n");
     wheel1.GoForward();
     HAL_Delay(500);
@@ -132,6 +137,7 @@ int main(void)
         } 
 
     }
+    */
 }
 
 extern "C"
