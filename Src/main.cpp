@@ -56,7 +56,7 @@ void usbRxCallback(uint8_t *buffer, uint32_t len)
     if(len > 0)
     {
         motorsAction = buffer[0];
-        printf("Motor action : %c", motorsAction);
+        printf("Motor action : %c\n", motorsAction);
     } 
 
 }
@@ -80,7 +80,7 @@ int main(void)
 
     /* Initialize all configured peripherals */
     MX_GPIO_Init();
-    MX_USB_DEVICE_Init(&usbRxCallback);
+    MX_USB_DEVICE_Init_User(&usbRxCallback);
 
     //Enable H bridge motors
     HAL_GPIO_WritePin(GPIOE, GPIO_PIN_11, GPIO_PIN_SET);
