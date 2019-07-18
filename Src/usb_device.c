@@ -56,13 +56,18 @@ USBD_HandleTypeDef hUsbDeviceFS;
  */
 /* USER CODE BEGIN 1 */
 
+void MX_USB_DEVICE_Init_User(void(*rxCallback)(uint8_t*, uint32_t))
+{
+    MX_USB_DEVICE_Init();
+    USBD_CDC_SetRxCallBack(rxCallback);
+}
 /* USER CODE END 1 */
 
 /**
   * Init USB device Library, add supported class and start the library
   * @retval None
   */
-void MX_USB_DEVICE_Init(void(*rxCallback)(uint8_t*, uint32_t))
+void MX_USB_DEVICE_Init(void)
 {
   /* USER CODE BEGIN USB_DEVICE_Init_PreTreatment */
   
@@ -85,7 +90,6 @@ void MX_USB_DEVICE_Init(void(*rxCallback)(uint8_t*, uint32_t))
   {
     Error_Handler();
   }
-  USBD_CDC_SetRxCallBack(rxCallback);
 
   /* USER CODE BEGIN USB_DEVICE_Init_PostTreatment */
   HAL_PWREx_EnableUSBVoltageDetector();

@@ -1,3 +1,4 @@
+/* USER CODE BEGIN Header */
 /**
   ******************************************************************************
   * @file           : usb_device.h
@@ -16,6 +17,7 @@
   *
   ******************************************************************************
   */
+/* USER CODE END Header */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __USB_DEVICE__H__
@@ -30,7 +32,9 @@
 #include "stm32h7xx_hal.h"
 #include "usbd_def.h"
 
+/* USER CODE BEGIN INCLUDE */
 
+/* USER CODE END INCLUDE */
 
 /** @addtogroup USBD_OTG_DRIVER
   * @{
@@ -47,15 +51,21 @@
   */
 
 /* Private variables ---------------------------------------------------------*/
+/* USER CODE BEGIN PV */
 
+/* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
+/* USER CODE BEGIN PFP */
 
+/* USER CODE END PFP */
 
 /*
  * -- Insert your variables declaration here --
  */
+/* USER CODE BEGIN VARIABLES */
 
+/* USER CODE END VARIABLES */
 /**
   * @}
   */
@@ -66,12 +76,15 @@
   */
 
 /** USB Device initialization function. */
-void MX_USB_DEVICE_Init(void(*rxCallback)(uint8_t*, uint32_t));
+void MX_USB_DEVICE_Init(void);
 
 /*
  * -- Insert functions declaration here --
  */
+/* USER CODE BEGIN FD */
 
+void MX_USB_DEVICE_Init_User(void(*rxCallback)(uint8_t*, uint32_t));
+/* USER CODE END FD */
 /**
   * @}
   */
