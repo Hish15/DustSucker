@@ -24,6 +24,9 @@ add_link_options(-specs=nano.specs -u _printf_float
 
 add_executable(dust_sucker.elf
     Src/syscalls.c
+    Src/gpio.c
+    Src/tim.c
+    Src/usart.c
     Src/main.cpp
     Src/stm32h7xx_it.c 
     Src/stm32h7xx_hal_msp.c 
