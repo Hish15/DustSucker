@@ -15,19 +15,20 @@ class Wheel
          *
          * \param ratio [0 : 1.0] pwm ratio
          */
-        void GoForward();
+        void GoForward(float ratio = 0.5f);
         /*
          * Turn the wheel backward at given pwm ratio
          *
          * \param ratio [0 : 1.0] pwm ratio
          */
-        void GoBack();
+        void GoBack(float ratio = 0.5f);
         /*
          * Stop any wheel motion 
          */
         void Stop();
 
     private:
+        void SetPWMRatio(uint32_t channel, float ratio);
         TIM_HandleTypeDef *_TIM_Handle;
         uint32_t _farwardChannel;
         uint32_t _backwardChannel;
