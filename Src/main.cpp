@@ -86,13 +86,11 @@ int main(void)
     //Enable H bridge motors
     HAL_GPIO_WritePin(GPIOE, GPIO_PIN_11, GPIO_PIN_SET);
     HAL_GPIO_WritePin(GPIOE, GPIO_PIN_14, GPIO_PIN_SET);
-    HAL_TIM_PWM_Start(&htim4,TIM_CHANNEL_2);
-    HAL_TIM_PWM_Start(&htim4,TIM_CHANNEL_4);
-    while(true);
+    Wheel wheel1(&htim4, TIM_CHANNEL_1, TIM_CHANNEL_2); 
+    Wheel wheel2(&htim4, TIM_CHANNEL_3, TIM_CHANNEL_4); 
     //Wheel wheel1(GPIOD, GPIO_PIN_12, GPIOD, GPIO_PIN_13);
     //Wheel wheel2(GPIOD, GPIO_PIN_14, GPIOD, GPIO_PIN_15);
     /* Infinite loop */
-    /*
     printf("Starting wheels test\n");
     wheel1.GoForward();
     HAL_Delay(500);
@@ -137,7 +135,6 @@ int main(void)
         } 
 
     }
-    */
 }
 
 extern "C"

@@ -1,40 +1,28 @@
 #include "wheel.h"
 
-Wheel::Wheel(GPIO_TypeDef* forwardPort, uint16_t forwardPin, GPIO_TypeDef* backwardPort, uint16_t backwardPin)
+Wheel::Wheel(TIM_HandleTypeDef *tim, uint32_t forwardChannel, uint32_t backwardChannel) 
 {
-    _forwardPort = forwardPort;
-    _forwardPin = forwardPin;
-    _backwardPort = backwardPort;
-    _backwardPin =  backwardPin;
 
-    GPIO_InitTypeDef  GPIO_InitStruct = {0};
-
-    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-    GPIO_InitStruct.Pull = GPIO_NOPULL;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_MEDIUM;
-
-    GPIO_InitStruct.Pin = forwardPin;
-    HAL_GPIO_Init(forwardPort, &GPIO_InitStruct);
-    HAL_GPIO_WritePin(forwardPort, forwardPin, GPIO_PIN_RESET);
-
-    GPIO_InitStruct.Pin = backwardPin;
-    HAL_GPIO_Init(backwardPort, &GPIO_InitStruct);
-    HAL_GPIO_WritePin(backwardPort, backwardPin, GPIO_PIN_RESET);
-
+    _TIM_Handle = tim;
+    _farwardChannel = forwardChannel;
+    _backwardChannel = backwardChannel;
 }
 
-void Wheel::GoForward(float ratio)
+void Wheel::GoForward()
 {
-    HAL_GPIO_WritePin(_forwardPort,_forwardPin,GPIO_PIN_SET);
-    HAL_GPIO_WritePin(_backwardPort, _backwardPin, GPIO_PIN_RESET);
+
+    HAL_TIM_PWM_Stop(_TIM_Handle, _backwardChannel);
+    HAL_TIM_PWM_Start(_TIM_Handle, _farwardChannel);
 }
-void Wheel::GoBack( float ratio)
+void Wheel::GoBack()
 {
-    HAL_GPIO_WritePin(_backwardPort,_backwardPin,GPIO_PIN_SET);
-    HAL_GPIO_WritePin(_forwardPort, _forwardPin, GPIO_PIN_RESET);
+    HAL_TIM_PWM_Stop(_TIM_Handle, _farwardChannel);
+    HAL_TIM_PWM_Start(_TIM_Handle, _backwardChannel);
+        
 }
 void Wheel::Stop()
 {
-    HAL_GPIO_WritePin(_backwardPort, _backwardPin, GPIO_PIN_RESET);
-    HAL_GPIO_WritePin(_forwardPort, _forwardPin, GPIO_PIN_RESET);
+    
+    HAL_TIM_PWM_Stop(_TIM_Handle, _backwardChannel);
+    HAL_TIM_PWM_Stop(_TIM_Handle, _farwardChannel);
 }
