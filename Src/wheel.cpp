@@ -10,21 +10,29 @@ Wheel::Wheel(TIM_HandleTypeDef *tim, uint32_t forwardChannel, uint32_t backwardC
 
 void Wheel::SetPWMRatio(uint32_t channel, float ratio)
 {
-  uint16_t period = static_cast<uint16_t>(ratio * _TIM_Handle->Init.Period);  
+    if(ratio > 1.0f)
+    {
+        ratio = 1.0f;
+    }
+    else if(ratio < 0.0f)
+    {
+        ratio = 0.0f;
+    }
+    uint16_t period = static_cast<uint16_t>(ratio * _TIM_Handle->Init.Period);  
     switch(channel)
     {
         case TIM_CHANNEL_1:
-         _TIM_Handle->Instance->CCR1 = period;
-         break;
+            _TIM_Handle->Instance->CCR1 = period;
+            break;
         case TIM_CHANNEL_2:
-         _TIM_Handle->Instance->CCR2 = period;
-         break;
+            _TIM_Handle->Instance->CCR2 = period;
+            break;
         case TIM_CHANNEL_3:
-         _TIM_Handle->Instance->CCR3 = period;
-         break;
+            _TIM_Handle->Instance->CCR3 = period;
+            break;
         case TIM_CHANNEL_4:
-         _TIM_Handle->Instance->CCR4 = period;
-         break;
+            _TIM_Handle->Instance->CCR4 = period;
+            break;
     }
 }
 
