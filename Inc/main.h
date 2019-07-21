@@ -58,6 +58,7 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define TIM_PERIOD_30KHZ 3999
 #define USER_Btn_Pin GPIO_PIN_13
 #define USER_Btn_GPIO_Port GPIOC
 #define MCO_Pin GPIO_PIN_0
@@ -74,6 +75,10 @@ void Error_Handler(void);
 #define RMII_RXD0_GPIO_Port GPIOC
 #define RMII_RXD1_Pin GPIO_PIN_5
 #define RMII_RXD1_GPIO_Port GPIOC
+#define Wheel1_Enable_Pin GPIO_PIN_11
+#define Wheel1_Enable_GPIO_Port GPIOE
+#define Wheel2_Enable_Pin GPIO_PIN_14
+#define Wheel2_Enable_GPIO_Port GPIOE
 #define RMII_TXD1_Pin GPIO_PIN_13
 #define RMII_TXD1_GPIO_Port GPIOB
 #define LD3_Pin GPIO_PIN_14
@@ -82,6 +87,14 @@ void Error_Handler(void);
 #define STLK_RX_GPIO_Port GPIOD
 #define STLK_TX_Pin GPIO_PIN_9
 #define STLK_TX_GPIO_Port GPIOD
+#define Wheel1_Forward_Pin GPIO_PIN_12
+#define Wheel1_Forward_GPIO_Port GPIOD
+#define Wheel1_Backward_Pin GPIO_PIN_13
+#define Wheel1_Backward_GPIO_Port GPIOD
+#define Wheel2_Frontward_Pin GPIO_PIN_14
+#define Wheel2_Frontward_GPIO_Port GPIOD
+#define Wheel2_Backward_Pin GPIO_PIN_15
+#define Wheel2_Backward_GPIO_Port GPIOD
 #define USB_PowerSwitchOn_Pin GPIO_PIN_6
 #define USB_PowerSwitchOn_GPIO_Port GPIOG
 #define USB_OverCurrent_Pin GPIO_PIN_7

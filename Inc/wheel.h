@@ -8,28 +8,34 @@ extern "C"
 class Wheel
 {
     public:
-        Wheel(GPIO_TypeDef* forwardPort, uint16_t forwardPin, GPIO_TypeDef* backwardPort, uint16_t backwardPin);
-
+        
+        /*
+         * Constructor from an STM32_HAL TIM handle
+         * \param tim       pointer to the TIM handle
+         * \param forwardChannel    TIM channel number for the forward direction
+         * \param backwardChannel   TIM channel number for the backward direction
+         */
+        Wheel(TIM_HandleTypeDef *tim, uint32_t forwardChannel, uint32_t backwardChannel); 
         /*
          * Turn the wheel forward at given pwm ratio
          *
          * \param ratio [0 : 1.0] pwm ratio
          */
-        void GoForward(float ratio = 1.0f);
+        void GoForward(float ratio = 0.5f);
         /*
          * Turn the wheel backward at given pwm ratio
          *
          * \param ratio [0 : 1.0] pwm ratio
          */
-        void GoBack(float ratio = 1.0f);
+        void GoBack(float ratio = 0.5f);
         /*
          * Stop any wheel motion 
          */
         void Stop();
 
     private:
-        GPIO_TypeDef* _forwardPort;
-        uint16_t _forwardPin;
-        GPIO_TypeDef* _backwardPort;
-        uint16_t _backwardPin;
+        void SetPWMRatio(uint32_t channel, float ratio);
+        TIM_HandleTypeDef *_TIM_Handle;
+        uint32_t _farwardChannel;
+        uint32_t _backwardChannel;
 };
