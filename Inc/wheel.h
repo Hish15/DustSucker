@@ -9,6 +9,12 @@ class Wheel
 {
     public:
         
+        /*
+         * Constructor from an STM32_HAL TIM handle
+         * \param tim       pointer to the TIM handle
+         * \param forwardChannel    TIM channel number for the forward direction
+         * \param backwardChannel   TIM channel number for the backward direction
+         */
         Wheel(TIM_HandleTypeDef *tim, uint32_t forwardChannel, uint32_t backwardChannel); 
         /*
          * Turn the wheel forward at given pwm ratio
