@@ -121,6 +121,10 @@ int main(void)
                 wheel1.Stop();
                 wheel2.GoForward();
                 break;
+            case 'B':
+                wheel1.GoBack();
+                wheel2.GoBack();
+                break;
             case 'F':
                 wheel1.GoForward();
                 wheel2.GoForward();
