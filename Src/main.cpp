@@ -110,6 +110,12 @@ int main(void)
     {
 
         HAL_GPIO_TogglePin(LD3_GPIO_Port, LD3_Pin);
+        if(GPIO_PIN_SET == HAL_GPIO_ReadPin(USER_Btn_GPIO_Port,USER_Btn_Pin))
+        {
+            while(GPIO_PIN_SET == HAL_GPIO_ReadPin(USER_Btn_GPIO_Port,USER_Btn_Pin));
+            motorsAction = (motorsAction != 'F')? 'F' : 'B';
+        }
+
         switch(motorsAction)
         {
             case 'L':
@@ -120,6 +126,10 @@ int main(void)
             case 'R':
                 wheel1.Stop();
                 wheel2.GoForward();
+                break;
+            case 'B':
+                wheel1.GoBack();
+                wheel2.GoBack();
                 break;
             case 'F':
                 wheel1.GoForward();
