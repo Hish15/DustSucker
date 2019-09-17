@@ -24,6 +24,7 @@
 #include "usbd_cdc_if.h"
 #include "wheel.h"
 #include "tim.h"
+#include "vl53l1_api.h"
 /* Private includes ----------------------------------------------------------*/
 
 

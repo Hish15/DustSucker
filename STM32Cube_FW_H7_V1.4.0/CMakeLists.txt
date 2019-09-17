@@ -13,8 +13,8 @@ target_sources(hal_stm32h7 PRIVATE ${STARTUP_FILE})
 
 target_include_directories(hal_stm32h7 
     PRIVATE 
-        .
     PUBLIC
+        .
         CMSIS/Device/ST/STM32H7xx/Include
         CMSIS/Include)
 
