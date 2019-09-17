@@ -26,6 +26,7 @@ add_executable(dust_sucker.elf
     Src/syscalls.c
     Src/gpio.c
     Src/tim.c
+    Src/i2c.c
     Src/usart.c
     Src/main.c
     Src/main.cpp
