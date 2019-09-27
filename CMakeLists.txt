@@ -27,6 +27,7 @@ add_executable(dust_sucker.elf
     Src/gpio.c
     Src/tim.c
     Src/usart.c
+    Src/main.c
     Src/main.cpp
     Src/stm32h7xx_it.c 
     Src/stm32h7xx_hal_msp.c 

@@ -46,7 +46,10 @@
  */
 char motorsAction = 'S';
 
-
+Wheel wheel1(&htim4, TIM_CHANNEL_1, TIM_CHANNEL_2); 
+Wheel wheel2(&htim4, TIM_CHANNEL_3, TIM_CHANNEL_4); 
+constexpr int32_t blinkPeriodMs = 100;
+constexpr int32_t holdButtonMS = 100;
 /* Private user code ---------------------------------------------------------*/
 void usbRxCallback(uint8_t *buffer, uint32_t len)
 {
@@ -58,37 +61,29 @@ void usbRxCallback(uint8_t *buffer, uint32_t len)
     } 
 
 }
-/**
- * @brief  The application entry point.
- * @retval int
- */
-int main(void)
+void Init(void)
 {
-
     /* MCU Configuration--------------------------------------------------------*/
 
     /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
     HAL_Init();
 
-
-
     /* Configure the system clock */
     SystemClock_Config();
-
 
     /* Initialize all configured peripherals */
     MX_GPIO_Init();
     MX_TIM4_Init(); 
     MX_USB_DEVICE_Init_User(&usbRxCallback);
 
+
     //Enable H bridge motors
     HAL_GPIO_WritePin(GPIOE, GPIO_PIN_11, GPIO_PIN_SET);
     HAL_GPIO_WritePin(GPIOE, GPIO_PIN_14, GPIO_PIN_SET);
-    Wheel wheel1(&htim4, TIM_CHANNEL_1, TIM_CHANNEL_2); 
-    Wheel wheel2(&htim4, TIM_CHANNEL_3, TIM_CHANNEL_4); 
-    //Wheel wheel1(GPIOD, GPIO_PIN_12, GPIOD, GPIO_PIN_13);
-    //Wheel wheel2(GPIOD, GPIO_PIN_14, GPIOD, GPIO_PIN_15);
-    /* Infinite loop */
+
+}
+void Diagnostic(void)
+{
     printf("Starting wheels test\n");
     wheel1.GoForward();
     HAL_Delay(500);
@@ -102,18 +97,38 @@ int main(void)
     wheel2.GoBack();
     HAL_Delay(500);
     wheel2.Stop();
-    uint16_t durationStep = 100;
-    printf("Entering main loop\n");
-    while (1)
-    {
+}
 
+void StepLoop(void)
+{
+    uint32_t timeNow = HAL_GetTick();
+
+    //Handling the LED status blink
+    static uint32_t lastBlink = HAL_GetTick();
+    if( timeNow - lastBlink > blinkPeriodMs)
+    {
         HAL_GPIO_TogglePin(LD3_GPIO_Port, LD3_Pin);
-        if(GPIO_PIN_SET == HAL_GPIO_ReadPin(USER_Btn_GPIO_Port,USER_Btn_Pin))
+        lastBlink = timeNow;
+    }
+
+    //Handling the user button action : toggle back and forth motion
+    static uint32_t lastButtonRelease = HAL_GetTick();
+    if(GPIO_PIN_SET == HAL_GPIO_ReadPin(USER_Btn_GPIO_Port,USER_Btn_Pin))
+    {
+        if(timeNow - lastButtonRelease > holdButtonMS)
         {
-            while(GPIO_PIN_SET == HAL_GPIO_ReadPin(USER_Btn_GPIO_Port,USER_Btn_Pin));
             motorsAction = (motorsAction != 'F')? 'F' : 'B';
         }
+    }
+    else
+    {
+        lastButtonRelease = timeNow;
+    }
 
+    //Handling the motor motion
+    static char lastMotorAction = '0';
+    if(lastMotorAction != motorsAction)
+    {
         switch(motorsAction)
         {
             case 'L':
@@ -137,11 +152,24 @@ int main(void)
             default:
                 wheel1.Stop();
                 wheel2.Stop();
-                HAL_Delay(durationStep);
                 break;
-
         } 
+    }
+}
 
+/**
+ * @brief  The application entry point.
+ * @retval int
+ */
+int main(void)
+{
+    Init();
+    Diagnostic();
+    /* Infinite loop */
+    printf("Entering main loop\n");
+    while (1)
+    {
+        StepLoop();
     }
 }
 
