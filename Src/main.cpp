@@ -82,8 +82,9 @@ void Init(void)
     HAL_GPIO_WritePin(GPIOE, GPIO_PIN_14, GPIO_PIN_SET);
 
 }
-void Diagnostic(void)
+bool Diagnostic(void)
 {
+    bool isDiagnosticOK = true;
     printf("Starting wheels test\n");
     wheel1.GoForward();
     HAL_Delay(500);
@@ -97,6 +98,7 @@ void Diagnostic(void)
     wheel2.GoBack();
     HAL_Delay(500);
     wheel2.Stop();
+    return isDiagnosticOK;
 }
 
 void StepLoop(void)
@@ -164,7 +166,10 @@ void StepLoop(void)
 int main(void)
 {
     Init();
-    Diagnostic();
+    if(Diagnostic() == false)
+    {
+        printf("Error on Diagnostic\n");
+    }
     /* Infinite loop */
     printf("Entering main loop\n");
     while (1)
