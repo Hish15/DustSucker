@@ -49,7 +49,7 @@ char motorsAction = 'S';
 Wheel wheel1(&htim4, TIM_CHANNEL_1, TIM_CHANNEL_2); 
 Wheel wheel2(&htim4, TIM_CHANNEL_3, TIM_CHANNEL_4); 
 constexpr int32_t blinkPeriodMs = 100;
-constexpr int32_t holdButtonMS = 100;
+constexpr int32_t holdButtonMS = 250;
 /* Private user code ---------------------------------------------------------*/
 void usbRxCallback(uint8_t *buffer, uint32_t len)
 {
@@ -120,6 +120,7 @@ void StepLoop(void)
         if(timeNow - lastButtonRelease > holdButtonMS)
         {
             motorsAction = (motorsAction != 'F')? 'F' : 'B';
+            lastButtonRelease = timeNow;
         }
     }
     else
