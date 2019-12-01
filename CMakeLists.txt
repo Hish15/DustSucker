@@ -26,6 +26,7 @@ add_executable(dust_sucker.elf
     Src/syscalls.c
     Src/gpio.c
     Src/tim.c
+    Src/i2c.c
     Src/usart.c
     Src/main.c
     Src/main.cpp
@@ -52,6 +53,11 @@ target_link_libraries(dust_sucker.elf PUBLIC stm32_usb_device)
 
 add_subdirectory(STM32Cube_FW_H7_V1.4.0)
 target_link_libraries( dust_sucker.elf PUBLIC hal_stm32h7)
+add_subdirectory(ST-VL53L1X)
+target_link_libraries(vl53l1x PUBLIC hal_stm32h7)
+
+target_link_libraries( dust_sucker.elf PUBLIC vl53l1x)
+
 set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD

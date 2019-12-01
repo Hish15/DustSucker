@@ -24,6 +24,10 @@
 #include "usbd_cdc_if.h"
 #include "wheel.h"
 #include "tim.h"
+#include "i2c.h"
+
+#include "vl53l1_api.h"
+#include "vl53l1_platform.h"
 /* Private includes ----------------------------------------------------------*/
 
 
@@ -46,10 +50,18 @@
  */
 char motorsAction = 'S';
 
+
+const uint32_t DIAGNOSTIC_START_DELAY_MS =  5000;
+
 Wheel wheel1(&htim4, TIM_CHANNEL_1, TIM_CHANNEL_2); 
 Wheel wheel2(&htim4, TIM_CHANNEL_3, TIM_CHANNEL_4); 
 constexpr int32_t blinkPeriodMs = 100;
 constexpr int32_t holdButtonMS = 250;
+uint8_t byteData = 0;
+VL53L1_Dev_t                   dev;
+VL53L1_DEV                     Dev = &dev;
+/* Private function prototypes -----------------------------------------------*/
+
 /* Private user code ---------------------------------------------------------*/
 void usbRxCallback(uint8_t *buffer, uint32_t len)
 {
@@ -75,6 +87,7 @@ void Init(void)
     MX_GPIO_Init();
     MX_TIM4_Init(); 
     MX_USB_DEVICE_Init_User(&usbRxCallback);
+    MX_I2C1_Init();
 
 
     //Enable H bridge motors
@@ -98,6 +111,19 @@ bool Diagnostic(void)
     wheel2.GoBack();
     HAL_Delay(500);
     wheel2.Stop();
+    //Enabling ToF sensor VL53L1
+	
+    Dev->I2cHandle = &hi2c1;
+    Dev->I2cDevAddr = 0x52;  
+    VL53L1_RdByte(Dev, VL53L1_IDENTIFICATION__MODEL_ID, &byteData);
+
+    printf("VL53L1X Model_ID: %02X\n", byteData);
+    if(byteData != 0xEA)
+    {
+        isDiagnosticOK = false;
+
+    
+	}
     return isDiagnosticOK;
 }
 
@@ -167,6 +193,7 @@ void StepLoop(void)
 int main(void)
 {
     Init();
+    HAL_Delay(DIAGNOSTIC_START_DELAY_MS);
     if(Diagnostic() == false)
     {
         printf("Error on Diagnostic\n");
