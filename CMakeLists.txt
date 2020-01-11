@@ -59,6 +59,18 @@ target_link_libraries(vl53l1x PUBLIC hal_stm32h7)
 target_link_libraries( dust_sucker PUBLIC vl53l1x)
 
 
+#Adding MPU as a test
+add_library(mpu9250 STATIC)
+target_link_libraries(mpu9250 PUBLIC hal_stm32h7)
+target_compile_definitions(mpu9250 PRIVATE STM32H7xx)
+target_sources(mpu9250 PRIVATE
+    MPU/src/MPU.cpp 
+    MPU/src/MPU9250.cpp
+    MPU/src/MPU9250_Master_I2C_STM32_HAL.cpp)
+
+target_link_libraries(dust_sucker PUBLIC mpu9250)
+
+
 set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 
 set_target_properties(dust_sucker PROPERTIES
