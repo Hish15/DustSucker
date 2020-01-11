@@ -111,5 +111,5 @@ target_sources(hal_stm32h7 PRIVATE
     Src/stm32h7xx_ll_tim.c
     Src/stm32h7xx_ll_usart.c
     Src/stm32h7xx_ll_usb.c
-    Src/stm32h7xx_ll_utils.c
+    #Src/stm32h7xx_ll_utils.c
 )
