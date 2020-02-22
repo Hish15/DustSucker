@@ -61,6 +61,10 @@ void SystemClock_Config(void);
 #define TIM_PERIOD_30KHZ 3999
 #define USER_Btn_Pin GPIO_PIN_13
 #define USER_Btn_GPIO_Port GPIOC
+#define MPU9250_I2C_SDA_Pin GPIO_PIN_0
+#define MPU9250_I2C_SDA_GPIO_Port GPIOF
+#define MPU9250_I2C_SCL_Pin GPIO_PIN_1
+#define MPU9250_I2C_SCL_GPIO_Port GPIOF
 #define MCO_Pin GPIO_PIN_0
 #define MCO_GPIO_Port GPIOH
 #define RMII_MDC_Pin GPIO_PIN_1
