@@ -133,7 +133,7 @@ bool Diagnostic(void)
     HAL_Delay(500);
     wheel2.Stop();
     //Enabling ToF sensor VL53L1
-	
+	printf("Starting ToF sensor test\n");
     Dev->I2cHandle = &hi2c1;
     Dev->I2cDevAddr = 0x52;  
     VL53L1_RdByte(Dev, VL53L1_IDENTIFICATION__MODEL_ID, &byteData);
@@ -142,9 +142,24 @@ bool Diagnostic(void)
     if(byteData != 0xEA)
     {
         isDiagnosticOK = false;
-
-    
+        printf("ErrorT on Tof sensor init\n");
 	}
+    
+    printf("Starting the MPU9250 device\n");
+    switch (imu.begin()) {
+
+        case MPUIMU::ERROR_IMU_ID:
+            printf("Bad IMU device ID\n");
+            break;
+        case MPUIMU::ERROR_MAG_ID:
+            printf("Bad magnetometer device ID\n");
+            break;
+        case MPUIMU::ERROR_SELFTEST:
+            //error("Failed self-test");
+            break;
+        default:
+            printf("MPU9250 init!\n");
+    }
     return isDiagnosticOK;
 }
 
