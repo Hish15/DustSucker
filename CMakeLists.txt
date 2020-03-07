@@ -73,5 +73,6 @@ file(WRITE "${JLINK_FILE}"
     "exit")
 add_custom_target(flash
 	COMMENT "Trying to flash the device with ${PROJECT_NAME} at 0x08000000"
-	COMMAND JLink.exe -device "STM32H743ZI" -autoconnect 1 -If SWD -Speed 4000  -ExitOnError -CommandFile "flash_${PROJECT_NAME}.jlink")
+    COMMAND JLink.exe -device "STM32H743ZI" -autoconnect 1 -If SWD -Speed 4000  -ExitOnError -CommandFile "flash_${PROJECT_NAME}.jlink"
+    DEPENDS dust_sucker.elf)
 
