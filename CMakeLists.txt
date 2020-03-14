@@ -57,7 +57,6 @@ add_subdirectory(ST-VL53L1X)
 target_link_libraries(vl53l1x PUBLIC hal_stm32h7)
 
 target_link_libraries( dust_sucker PUBLIC vl53l1x)
-target_link_libraries(dust_sucker PUBLIC mpu9250)
 
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
@@ -67,17 +66,11 @@ set_target_properties(dust_sucker PROPERTIES
 
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     #COMMAND ${CMAKE_OBJCOPY} -O ihex $<TARGET_FILE:${PROJECT_NAME}> ${PROJECT_NAME}.hex
-	COMMENT "Building ${HEX_FILE} \nBuilding ${BIN_FILE}"
-    COMMAND ${CMAKE_OBJCOPY} -Obinary $<TARGET_FILE:${PROJECT_NAME}> ${PROJECT_NAME}.bin)
+	COMMENT "Building ${HEX_FILE} \nBuilding ${BIN_FILE}")
 	
-set(JLINK_FILE "${CMAKE_CURRENT_BINARY_DIR}/flash_${PROJECT_NAME}.jlink")
-file(WRITE "${JLINK_FILE}"
-	"loadbin ${PROJECT_NAME}.bin,0x08000000\n"
-	"r\n"
-	"go\n"
-    "exit")
+
 add_custom_target(flash
 	COMMENT "Trying to flash the device with ${PROJECT_NAME} at 0x08000000"
-    COMMAND JLink.exe -device "STM32H743ZI" -autoconnect 1 -If SWD -Speed 4000  -ExitOnError -CommandFile "flash_${PROJECT_NAME}.jlink"
-    DEPENDS dust_sucker.elf)
+    COMMAND STM32_Programmer_CLI --connect port=swd --write ${PROJECT_NAME}.elf -rst
+    DEPENDS dust_sucker)
 
