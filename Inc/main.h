@@ -69,6 +69,8 @@ void SystemClock_Config(void);
 #define MCO_GPIO_Port GPIOH
 #define RMII_MDC_Pin GPIO_PIN_1
 #define RMII_MDC_GPIO_Port GPIOC
+#define SH_M08_UART_TX_Pin GPIO_PIN_0
+#define SH_M08_UART_TX_GPIO_Port GPIOA
 #define RMII_REF_CLK_Pin GPIO_PIN_1
 #define RMII_REF_CLK_GPIO_Port GPIOA
 #define RMII_MDIO_Pin GPIO_PIN_2
@@ -113,6 +115,8 @@ void SystemClock_Config(void);
 #define USB_DM_GPIO_Port GPIOA
 #define USB_DP_Pin GPIO_PIN_12
 #define USB_DP_GPIO_Port GPIOA
+#define SH_M08_UART_TXC11_Pin GPIO_PIN_11
+#define SH_M08_UART_TXC11_GPIO_Port GPIOC
 #define RMII_TX_EN_Pin GPIO_PIN_11
 #define RMII_TX_EN_GPIO_Port GPIOG
 #define RMII_TXD0_Pin GPIO_PIN_13
