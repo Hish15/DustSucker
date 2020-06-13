@@ -25,6 +25,7 @@
 #include "wheel.h"
 #include "tim.h"
 #include "i2c.h"
+#include "usart.h"
 
 #include "vl53l1_api.h"
 #include "vl53l1_platform.h"
@@ -88,7 +89,6 @@ void usbRxCallback(uint8_t *buffer, uint32_t len)
     printf("Motor action : %c", motorsAction);
     if(len > 0)
     {
-        motorsAction = buffer[0];
         printf("Motor action : %c\n", motorsAction);
     } 
 
@@ -96,7 +96,11 @@ void usbRxCallback(uint8_t *buffer, uint32_t len)
 void Init(void)
 {
     /* MCU Configuration--------------------------------------------------------*/
+    /* Enable I-Cache */
+    SCB_EnableICache();
 
+    /* Enable D-Cache */
+    SCB_EnableDCache();
     /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
     HAL_Init();
 
@@ -106,10 +110,10 @@ void Init(void)
     /* Initialize all configured peripherals */
     MX_GPIO_Init();
     MX_TIM4_Init(); 
+    MX_UART4_Init();
     MX_USB_DEVICE_Init_User(&usbRxCallback);
     MX_I2C1_Init();
     MX_I2C2_Init();
-
 
     //Enable H bridge motors
     HAL_GPIO_WritePin(GPIOE, GPIO_PIN_11, GPIO_PIN_SET);
@@ -192,18 +196,28 @@ void StepLoop(void)
 
     //Handling the motor motion
     static char lastMotorAction = '0';
-    if(lastMotorAction != motorsAction)
+    
+    //Handling bluetooth
+    uint8_t uartBuffer[8];
+    if( HAL_OK == HAL_UART_Receive(&huart4,uartBuffer,3, 100))
+    {
+        motorsAction = uartBuffer[0];
+        printf("Motor action : %c", motorsAction);
+        HAL_UART_Transmit(&huart4, uartBuffer, 3, 100);
+    }
+    float turnSpeed = 0.6f;
+    if(motorsAction != lastMotorAction)
     {
         switch(motorsAction)
         {
             case 'L':
-                wheel1.GoForward();
-                wheel2.Stop();
+                wheel1.GoForward(turnSpeed);
+                wheel2.GoBack(turnSpeed);
 
                 break;
             case 'R':
-                wheel1.Stop();
-                wheel2.GoForward();
+                wheel1.GoBack(turnSpeed);
+                wheel2.GoForward(turnSpeed);
                 break;
             case 'B':
                 wheel1.GoBack();
