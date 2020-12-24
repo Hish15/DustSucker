@@ -9,8 +9,8 @@ find_package(HAL COMPONENTS STM32H757VG_M7 REQUIRED)
 find_package(CMSIS COMPONENTS STM32H757VG_M7 REQUIRED)
 
 #Creating both binaries
-add_executable(dustSucker main.c)
-target_include_directories(dustSucker PRIVATE .)
+add_executable(dustSucker Src/main.c)
+target_include_directories(dustSucker PRIVATE Inc)
 
 target_include_directories(dustSucker PRIVATE Inc)
 target_include_directories(dustSucker PRIVATE Inc)
