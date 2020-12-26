@@ -12,6 +12,14 @@ find_package(HAL COMPONENTS STM32H743ZI_M7 REQUIRED)
 find_package(CMSIS COMPONENTS STM32H743ZI_M7 REQUIRED)
 find_package(FreeRTOS COMPONENTS ARM_CM7)
 
+#Check HAL/CMSIS Version
+message(STATUS "CMSIS_VERSION is ${CMSIS_VERSION}")
+if(CMSIS_VERSION VERSION_EQUAL "5.4.0")
+    #All good
+else()
+    message(FATAL_ERROR "Wrong CMSIS version found, check ST HAL version") 
+endif()
+
 #Creating both binaries
 add_executable(dustSucker Src/main.c)
 target_include_directories(dustSucker PRIVATE Inc)
