@@ -14,13 +14,18 @@ Version requirements are specified in the CMakeLists.txt file
 
 ## How to build
 
-Run the following commands :
+This project contains a Dockerfile to allow to build easily and with all dependencies.
+Running the container will call cmake on a volume mounted to the container /home folder
+
+To use it the commands are :
 
 ```
-cmake -B build -G Ninja .
-ninja -C build
+docker build -t dustsucker . &&
+docker run --mount .:/home/ dustsucker
 ```
 
-The folder `build` will contain the freshly built firmware 
+An shortend way is to use docker-compose :
 
-
+```
+docker-compose up
+```
