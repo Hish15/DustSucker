@@ -15,13 +15,13 @@ Version requirements are specified in the CMakeLists.txt file
 ## How to build
 
 This project contains a Dockerfile to allow to build easily and with all dependencies.
-Running the container will call cmake on a volume mounted to the container /home folder
+Running the container will call cmake on a volume mounted to the container /usr/src/app folder
 
 To use it the commands are :
 
 ```
 docker build -t dustsucker . &&
-docker run --mount .:/home/ dustsucker
+docker run --mount .:usr/src/app dustsucker
 ```
 
 An shortend way is to use docker-compose :

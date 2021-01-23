@@ -3,4 +3,4 @@ services:
   cmake-build:
     build: .
     volumes:
-        - .:/home/
+        - .:/usr/src/app

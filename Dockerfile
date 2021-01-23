@@ -3,5 +3,7 @@ RUN git clone --depth 1 -b v1.8.0 https://github.com/STMicroelectronics/STM32Cub
     && rm -fr /opt/STM32CubeH7/Projects/ \
     && rm -fr /opt/STM32CubeH7/.git/
 
-WORKDIR /home/
-ENTRYPOINT cmake -GNinja -Bbuild . && ninja -Cbuild
+WORKDIR /usr/src/app
+ENTRYPOINT cmake -GNinja -Bbuild . \
+    && ninja -Cbuild \
+    && chmod -R 777 build
