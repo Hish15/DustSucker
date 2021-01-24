@@ -15,19 +15,27 @@ find_package(CMSIS COMPONENTS STM32H743ZI_M7 REQUIRED )
 
 find_package(FreeRTOS COMPONENTS ARM_CM7)
 
-#Creating both binaries
-add_executable(dustSucker Src/main.cpp)
-target_include_directories(dustSucker PRIVATE Inc)
 
-target_link_libraries(dustSucker PRIVATE
+add_library(baseHAL INTERFACE)
+target_link_libraries(baseHAL INTERFACE
+    HAL::STM32::H7::M7::CORTEX
+    CMSIS::STM32::H743ZI::M7
+    STM32::NoSys
+    )
+add_library(freertos INTERFACE)
+target_link_libraries(freertos INTERFACE
     FreeRTOS::Timers
     FreeRTOS::Heap::1
     FreeRTOS::ARM_CM7
-    HAL::STM32::H7::M7::CORTEX
-    CMSIS::STM32::H743ZI::M7
-    HAL::STM32::H7::M7::RCC
+    )
+
+add_executable(dustSucker Src/main.cpp)
+target_include_directories(dustSucker PRIVATE Inc)
+target_link_libraries(dustSucker PRIVATE
+    baseHAL
+    freertos
     HAL::STM32::H7::M7::GPIO
-    STM32::NoSys
+    HAL::STM32::H7::M7::RCC
     )
 ADD_CUSTOM_TARGET(do_always ALL COMMAND ${CMAKE_OBJCOPY} -O ihex dustSucker.elf dustSucker.hex
                                 DEPENDS dustSucker)
