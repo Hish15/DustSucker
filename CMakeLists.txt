@@ -16,7 +16,7 @@ find_package(CMSIS COMPONENTS STM32H743ZI_M7 REQUIRED )
 find_package(FreeRTOS COMPONENTS ARM_CM7)
 
 #Creating both binaries
-add_executable(dustSucker Src/main.c)
+add_executable(dustSucker Src/main.cpp)
 target_include_directories(dustSucker PRIVATE Inc)
 
 target_link_libraries(dustSucker PRIVATE
