@@ -3,7 +3,7 @@ set(CMAKE_TOOLCHAIN_FILE ${CMAKE_CURRENT_SOURCE_DIR}/stm32-cmake/cmake/stm32_gcc
 set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
 
 
-project(DustSucker C ASM)
+project(DustSucker ASM C CXX)
 set(STM32_CUBE_H7_PATH /opt/STM32CubeH7)
 #Use freertos from STM32CubeH7
 set(FREERTOS_PATH ${STM32_CUBE_H7_PATH}/Middlewares/Third_Party/FreeRTOS)
