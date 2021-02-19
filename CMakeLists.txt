@@ -29,5 +29,5 @@ target_link_libraries(dustSucker PRIVATE
     HAL::STM32::H7::M7::GPIO
     STM32::NoSys
     )
-ADD_CUSTOM_TARGET(do_always ALL COMMAND ${CMAKE_OBJCOPY} -O ihex dustSucker dustSucker.hex
+ADD_CUSTOM_TARGET(do_always ALL COMMAND ${CMAKE_OBJCOPY} -O ihex dustSucker.elf dustSucker.hex
                                 DEPENDS dustSucker)
