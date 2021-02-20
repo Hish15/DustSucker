@@ -1,0 +1,11 @@
+name: container
+on: push
+
+jobs:
+    node-docker:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Download STM32CubeH7
+              run: |
+                  wget -o stm32.gz https://github.com/STMicroelectronics/STM32CubeH7/archive/v1.8.0.tar.gz
+                  tar xf stm32.gz -C /opt
