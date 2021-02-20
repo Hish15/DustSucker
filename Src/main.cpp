@@ -12,7 +12,7 @@ static void blinky(void *arg)
 {
     for(;;)
     {
-        vTaskDelay(500);
+        vTaskDelay(100);
         HAL_GPIO_TogglePin(LED_PORT, LED_PIN);
     }
 }
